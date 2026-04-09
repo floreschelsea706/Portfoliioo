@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Chelsea Flores</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  
+  <header>
+    <div class="logo">chelsea</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="story.html">Story</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <main class="center-container">
+    <div class="card" style="max-width: 400px; width: 100%;">
+      
+      <div id="login-view">
+        <h2>Login</h2>
+        
+        <div style="margin-top: 20px;">
+          <input type="text" id="user-in" placeholder="Username" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid var(--accent-gold); background: rgba(0,0,0,0.2); color: white; outline: none;">
+          
+          <input type="password" id="pass-in" placeholder="Password" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--accent-gold); background: rgba(0,0,0,0.2); color: white; outline: none;">
+        </div>
+        
+        <button class="btn" style="width: 100%; margin-top: 20px;" onclick="handleLogin()">Login</button>
+      </div>
+      
+      <div id="otp-view" class="hidden">
+        <h2 style="margin-bottom: 10px;">Verify OTP</h2>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Your security code is:</p>
+        <div id="otp-display" style="font-size: 2.5rem; font-weight: bold; color: var(--accent-gold); letter-spacing: 5px; margin-bottom: 20px;">0000</div>
+        
+        <input type="text" id="otp-in" placeholder="Enter 4-digit code" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--accent-gold); background: transparent; color: white; text-align: center; font-size: 1.2rem; margin-bottom: 15px; outline: none;">
+        
+        <button class="btn" style="width: 100%;" onclick="handleVerify()">Verify Access</button>
+      </div>
+      
+    </div>
+  </main>
+  
+  <footer>
+    <p>&copy; 2026 Chelsea Dianne Flores | BSIT 2B</p>
+  </footer>
+  
+  <script>
+    let generatedOTP = "";
+    
+    function handleLogin() {
+      const u = document.getElementById('user-in').value;
+      const p = document.getElementById('pass-in').value;
+      
+      // Simple validation base sa credentials mo
+      if (u === "che" && p === "123") {
+        // Generate 4-digit OTP
+        generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+        document.getElementById('otp-display').innerText = generatedOTP;
+        
+        // Switch view
+        document.getElementById('login-view').classList.add('hidden');
+        document.getElementById('otp-view').classList.remove('hidden');
+      } else {
+        alert("Mali ang Username o Password! Gamitin: admin / password123");
+      }
+    }
+    
+    function handleVerify() {
+      const input = document.getElementById('otp-in').value;
+      if (input === generatedOTP) {
+        alert("Access Granted! Welcome back, Chelsea.");
+        window.location.href = "index.html"; // Redirect sa home
+      } else {
+        alert("Mali ang OTP code. Subukan muli.");
+      }
+    }
+  </script>
+  
+</body>
+
+</html>

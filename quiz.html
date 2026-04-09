@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz | Chelsea Flores</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <header>
+    <div class="logo">chelsea</div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="story.html">Story</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+</header>
+
+    <main>
+        <div class="landscape-box" style="text-align: center;">
+            <h2 class="section-title">IT Proficiency Quiz</h2>
+            
+            <div id="quiz-intro">
+                <p class="justify">Test your digital literacy! You have 30 seconds to answer as many as you can.</p>
+                <button class="btn" onclick="startQuiz()">Start Challenge</button>
+            </div>
+
+            <div id="quiz-play" class="hidden">
+                <div id="timer" style="font-size: 2rem; color: var(--accent-gold); margin-bottom: 10px;">00:30</div>
+                <div class="progress-container" style="background: #140d0c; height: 10px; border-radius: 5px; margin-bottom: 20px; overflow: hidden;">
+                    <div id="progress-bar" style="background: var(--accent-gold); width: 0%; height: 100%; transition: 0.3s;"></div>
+                </div>
+                <h3 id="q-text" style="margin-bottom: 20px;"></h3>
+                <div id="q-options" class="action-grid"></div>
+            </div>
+
+            <div id="quiz-end" class="hidden">
+                <h2 id="final-score"></h2>
+                <button class="btn" onclick="location.reload()">Retry Quiz</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const questions = [
+            { q: "Which protocol is used for secure web browsing?", a: ["HTTP", "HTTPS"], c: 1 },
+            { q: "What is the brain of the computer?", a: ["RAM", "CPU"], c: 1 },
+            { q: "What does SQL stand for?", a: ["Simple Query", "Structured Query"], c: 1 },
+            { q: "1 Kilobyte is equal to how many Bytes?", a: ["1024", "1000"], c: 0 }
+        ];
+
+        let qIdx = 0, score = 0, timeLeft = 30, timer;
+
+        function startQuiz() {
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-play').classList.remove('hidden');
+            showQuestion();
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = `00:${timeLeft < 10 ? '0'+timeLeft : timeLeft}`;
+                if (timeLeft <= 0) endQuiz();
+            }, 1000);
+        }
+
+        function showQuestion() {
+            if (qIdx >= questions.length) return endQuiz();
+            const q = questions[qIdx];
+            document.getElementById('q-text').innerText = q.q;
+            document.getElementById('progress-bar').style.width = `${(qIdx / questions.length) * 100}%`;
+            
+            const btnBox = document.getElementById('q-options');
+            btnBox.innerHTML = "";
+            q.a.forEach((opt, i) => {
+                const b = document.createElement('button');
+                b.className = "action-btn";
+                b.innerText = opt;
+                b.onclick = () => {
+                    if (i === q.c) score++;
+                    qIdx++;
+                    showQuestion();
+                };
+                btnBox.appendChild(b);
+            });
+        }
+
+        function endQuiz() {
+            clearInterval(timer);
+            document.getElementById('quiz-play').classList.add('hidden');
+            document.getElementById('quiz-end').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `Score: ${score} / ${questions.length}`;
+        }
+    </script>
+</body>
+</html>
